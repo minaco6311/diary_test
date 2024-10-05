@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0 20px; /* 左右の余白を均等に */
+        box-sizing: border-box;
+      }
+
+      h1 {
+        color: #007BFF;
+        font-size: 24px;
+        text-align: center;
+      }
+
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      input[type="date"],
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box; /* 余白を均等にするために追加 */
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff69b4; /* 桃色 */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #ff85c1; /* 送信ボタンのホバー時の色 */
+      }
+
+      #statusMessage {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #28a745;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>日記データの入力</h1>
+    <form id="diaryForm">
+      <label for="date">日付:</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="title">タイトル:</label>
+      <input type="text" id="title" name="title" required>
+
+      <label for="body">本文:</label>
+      <textarea id="body" name="body" rows="10" required></textarea>
+
+      <label for="image">画像URL:</label>
+      <input type="text" id="image" name="image">
+
+      <button type="button" onclick="submitForm()">送信</button>
+    </form>
+
+    <div id="statusMessage"></div> <!-- メッセージ表示用のエリア -->
+
+    <script>
+      function submitForm() {
+        var formData = {
+          date: document.getElementById("date").value,
+          title: document.getElementById("title").value,
+          body: document.getElementById("body").value,
+          imageUrl: document.getElementById("image").value
+        };
+
+        google.script.run.withSuccessHandler(function(response) {
+          document.getElementById("statusMessage").innerHTML = response; // メッセージを表示
+          document.getElementById("diaryForm").reset(); // フォームをリセット
+        }).saveData(formData);
+      }
+    </script>
+  </body>
+</html>
